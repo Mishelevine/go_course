@@ -19,7 +19,7 @@ func task5() {
 	}
 
 	rub := int(finalSum)
-	kop := int((finalSum-float64(rub))*100 + 0.5)
+	kop := int((finalSum - float64(rub)) * 100)
 
 	lastDigit := rub % 10
 	var strAns string
@@ -34,5 +34,5 @@ func task5() {
 		strAns = "рублей"
 	}
 
-	fmt.Printf("В конце срока размер вклада составит %d %s %d коп.\n", rub, strAns, kop)
+	fmt.Printf("В конце срока размер вклада составит %d %s %02d коп.\n", rub, strAns, kop)
 }
