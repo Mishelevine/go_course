@@ -5,16 +5,17 @@ import (
 )
 
 type AATree struct {
-	root *Node
-	size int
+	root *Node // root элемент
+	size int // размер дерева
 }
 
 type Node struct {
-	key         int
-	level       int
-	left, right *Node
+	key int // значение вершины
+	level int // высота вершины
+	left, right *Node // указатели на потомков
 }
 
+// NewAATree: конструктор пустого дерева
 func NewAATree() *AATree {
 	return &AATree{}
 }
@@ -53,6 +54,7 @@ func Contains(t *AATree, key int) bool {
 	return false
 }
 
+// Уровень узла
 func levelOf(n *Node) int {
 	if n == nil {
 		return 0
@@ -181,6 +183,7 @@ func min(a, b int) int {
 	return b
 }
 
+// Объод дерева
 func InOrder(n *Node, visit func(int)) {
 	if n == nil {
 		return
