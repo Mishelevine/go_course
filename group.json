@@ -1,0 +1,7 @@
+{
+  "name": "RIS-22-1",
+  "students": [
+    { "id": 1, "last_name": "Иванов",  "first_name": "Иван",  "gpa": 7.2 },
+    { "id": 2, "last_name": "Петрова", "first_name": "Анна",  "gpa": 7.9 }
+  ]
+}
