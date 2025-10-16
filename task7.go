@@ -9,8 +9,6 @@ func sortLines(a [][]float64) {
 	for i := 0; i < len(a); i++ {
 		sort.Slice(a[i], func(j, k int) bool { return a[i][j] > a[i][k] })
 	}
-
-	fmt.Printf("Отсортированый массив:\n%v\n", a)
 }
 
 func task7() {
@@ -22,4 +20,6 @@ func task7() {
 	fmt.Printf("Изначальная матрица:\n%v\n", slices)
 
 	sortLines(slices)
+
+	fmt.Printf("Отсортированная матрица:\n%v\n", slices)
 }
