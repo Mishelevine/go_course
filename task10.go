@@ -5,13 +5,13 @@ import (
 )
 
 type AATree struct {
-	root *Node // root элемент
-	size int // размер дерева
+	root *Node // указатель на root элемент
+	size int   // размер дерева
 }
 
 type Node struct {
-	key int // значение вершины
-	level int // высота вершины
+	key         int   // значение вершины
+	level       int   // высота вершины
 	left, right *Node // указатели на потомков
 }
 
@@ -62,6 +62,7 @@ func levelOf(n *Node) int {
 	return n.level
 }
 
+// Повороты для балансировок
 func rotateLeft(n *Node) *Node {
 	r := n.right
 	n.right = r.left
@@ -76,6 +77,7 @@ func rotateRight(n *Node) *Node {
 	return l
 }
 
+// Балансировки
 func skew(n *Node) *Node {
 	if n == nil {
 		return n
@@ -97,6 +99,7 @@ func split(n *Node) *Node {
 	return n
 }
 
+// Корректировка уровня при удалении
 func decreaseLevel(n *Node) *Node {
 	if n == nil {
 		return n
@@ -111,7 +114,9 @@ func decreaseLevel(n *Node) *Node {
 	return n
 }
 
+// Рекурсивная функция вставки
 func insertRec(n *Node, key int, inserted *bool) *Node {
+	// Если дошли до конца
 	if n == nil {
 		*inserted = true
 		return &Node{key: key, level: 1}
@@ -120,16 +125,20 @@ func insertRec(n *Node, key int, inserted *bool) *Node {
 		n.left = insertRec(n.left, key, inserted)
 	} else if key > n.key {
 		n.right = insertRec(n.right, key, inserted)
-	} else {
+	} else { // если есть элемент равный вставке
 		return n
 	}
 
+	// Балансировки
 	n = skew(n)
 	n = split(n)
+
 	return n
 }
 
+// Рекурсивная функция удаления
 func deleteRec(n *Node, key int, deleted *bool) *Node {
+	// Если элемента нет
 	if n == nil {
 		return nil
 	}
@@ -138,29 +147,37 @@ func deleteRec(n *Node, key int, deleted *bool) *Node {
 		n.left = deleteRec(n.left, key, deleted)
 	} else if key > n.key {
 		n.right = deleteRec(n.right, key, deleted)
-	} else {
+	} else { // Нашли элемент, удаляем
 		*deleted = true
+		// Если у элемента нет детей просто удаляем
 		if n.left == nil && n.right == nil {
 			return nil
-		} else if n.left == nil {
+		} else if n.left == nil { // если есть только правый ребенок
+			// ищем наименьший элемент в правом поддереве
 			succ := n.right
 			for succ.left != nil {
 				succ = succ.left
 			}
+			// Ставим найденный элемент в текущий узел
 			n.key = succ.key
-			n.right = deleteRec(n.right, succ.key, new(bool))
-		} else {
+			// Удаляем найденный элемент
+			n.right = deleteRec(n.right, succ.key, new(bool)) // new используется чтобы передать незначимый нам указатель
+		} else { // если есть левый ребенок
+			// ицем наибольший элемент в левом поддереве
 			pred := n.left
 			for pred.right != nil {
 				pred = pred.right
 			}
+			// Ставим найденный элемент в текущий узел
 			n.key = pred.key
 			n.left = deleteRec(n.left, pred.key, new(bool))
 		}
 	}
 
+	// Вычисляет новый уровень узла
 	n = decreaseLevel(n)
 
+	// Балансировки
 	n = skew(n)
 	if n != nil {
 		n.right = skew(n.right)
@@ -188,9 +205,9 @@ func InOrder(n *Node, visit func(int)) {
 	if n == nil {
 		return
 	}
-	InOrder(n.left, visit)
+	InOrder(n.left, visit) // левое поддерево
 	visit(n.key)
-	InOrder(n.right, visit)
+	InOrder(n.right, visit) // Правое поддерево
 }
 
 func task10() {
