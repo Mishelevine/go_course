@@ -7,8 +7,12 @@ import (
 
 const n2 = 4
 
+// Генератор перестановок
+// Каждый раз после выхова возвращает следующую перестановку и bool
 func Generate(items [n2]string) func() ([n2]string, bool) {
-	a := items
+	a := items // Копирование массива
+
+	// Вычисление следующей перестановки
 	nextPerm := func(p *[n2]string) bool {
 		i := len(p) - 2
 		for i >= 0 && !(p[i] < p[i+1]) {
@@ -31,6 +35,7 @@ func Generate(items [n2]string) func() ([n2]string, bool) {
 		return true
 	}
 
+	// Возвращаем следующую перестановку или пустой массив
 	return func() ([n2]string, bool) {
 		if nextPerm(&a) {
 			return a, true
@@ -42,9 +47,10 @@ func Generate(items [n2]string) func() ([n2]string, bool) {
 
 func task9() {
 	p := [n2]string{"a", "b", "c", "d"}
-	s := p[:]
-	sort.Strings(s)
+	s := p[:]       // Создаем слайс, который ссылается на массив
+	sort.Strings(s) // Сортируем элементы
 	tst := Generate(p)
+	// Цикл печатает p и потом вызывает функцию генератора
 	for ok := true; ok; p, ok = tst() {
 		fmt.Println(p)
 	}
